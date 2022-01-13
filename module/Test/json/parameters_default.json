@@ -1,5 +1,19 @@
 [
     {
+        "PARAM": "YearSplit",
+        "VALUE": 0.020833333
+
+    },
+   {
+        "PARAM": "Storagetagcooling",
+        "VALUE": 0
+    },
+    {
+        "PARAM": "Storagetagheating",
+        "VALUE": 0
+    }, 
+
+    {
         "PARAM": "AccumulatedAnnualDemand",
         "VALUE": 0
     },
@@ -238,9 +252,6 @@
     {
         "PARAM": "VariableCost",
         "VALUE": 0
-    },
-    {
-        "PARAM": "YearSplit",
-        "VALUE": 1
     }
+    
 ]
