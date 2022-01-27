@@ -252,6 +252,10 @@
     {
         "PARAM": "VariableCost",
         "VALUE": 0
+    },
+    {
+        "PARAM": "GIS_Losses",
+        "VALUE": 0
     }
     
 ]
