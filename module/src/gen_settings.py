@@ -1,4 +1,3 @@
-
 DEFAULT_PARAM_SETTINGS = {
     "YearSplit": ["YEAR", "TIMESLICE"],
     "AccumulatedAnnualDemand": ["YEAR", "FUEL", "REGION"],
@@ -63,4 +62,5 @@ DEFAULT_PARAM_SETTINGS = {
     "TotalTechnologyModelPeriodActivityUpperLimit": ["REGION", "TECHNOLOGY", ],
     "TradeRoute": ["YEAR", "FUEL", "REGION2", "REGION"],
     "VariableCost": ["YEAR", "TECHNOLOGY", "MODE_OF_OPERATION", "REGION" ],
+    "GIS_Losses": ["FUEL", "REGION" ]
 }
