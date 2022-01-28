@@ -445,7 +445,7 @@ while i <= n:
             model += RateOfProductionByTechnologyByMode.get(ci(rflmty)) == 0, ""
         # EBa4_RateOfFuelUse1t
         if InputActivityRatio.get(ci([*rflmty[0:2], *rflmty[3:6]]), dflt.get('InputActivityRatio')) != 0:
-            model += RateOfUseByTechnologyByMode.get(ci(rflmty)) == RateOfActivity.get(ci([rflmty[0], *rflmty[2:6]])) / InputActivityRatio.get(ci([*rflmty[0:2], *rflmty[3:6]]), dflt.get('InputActivityRatio')), ""
+            model += RateOfUseByTechnologyByMode.get(ci(rflmty)) == RateOfActivity.get(ci([rflmty[0], *rflmty[2:6]])) * InputActivityRatio.get(ci([*rflmty[0:2], *rflmty[3:6]]), dflt.get('InputActivityRatio')), ""
 
     for rflty in REGION_FUEL_TIMESLICE_TECHNOLOGY_YEAR:
         # EBa2_RateOfFuelProduction2
