@@ -25,4 +25,4 @@ def run_test():
     print("GENERATED PARAMETERS", df)
 
     # MCS and N are not needed
-    # buildmodel(sets_df, df, default_df, None, 0)
+    buildmodel(sets_df, df, default_df, None, 0)

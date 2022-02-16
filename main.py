@@ -1,4 +1,4 @@
-from module.Test.test import run_test
+from module.test import init
 
 
-run_test()
+init()
