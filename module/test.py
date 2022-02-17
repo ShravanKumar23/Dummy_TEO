@@ -3,7 +3,7 @@ from .Test.test import run_test
 from .Test.test_lib import defineArguments, processInput
 
 availableTests = {
-    "buildmodel": run_test
+    "teo:buildmodel": run_test
 }
 
 
