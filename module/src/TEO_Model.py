@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import pulp
 import itertools
-from TEO_functions import *
+from .TEO_functions import *
 
 
 def buildmodel(sets_df, df, defaults_df, mcs_df, n):
@@ -1215,13 +1215,13 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
                 "",
             )
 
-#         for rr2fly in REGION_REGION2_FUEL_TIMESLICE_YEAR:
-#             # EBa10_EnergyBalanceEachTS4
-#             model += (
-#                 Trade.get(ci(rr2fly))
-#                 == -Trade.get(ci([rr2fly[1], rr2fly[0], *rr2fly[2:5]])),
-#                 "",
-#             )
+        #         for rr2fly in REGION_REGION2_FUEL_TIMESLICE_YEAR:
+        #             # EBa10_EnergyBalanceEachTS4
+        #             model += (
+        #                 Trade.get(ci(rr2fly))
+        #                 == -Trade.get(ci([rr2fly[1], rr2fly[0], *rr2fly[2:5]])),
+        #                 "",
+        #             )
 
         # ====  Energy Balance B  ====
 
