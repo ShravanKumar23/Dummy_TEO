@@ -366,4 +366,4 @@ def CreateResults(res_df):
         
         TEO_Results[key] = output[key].to_dict(orient = 'records')
     
-    return(output)
+    return(TEO_Results)
