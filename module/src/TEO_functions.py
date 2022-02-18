@@ -208,3 +208,145 @@ def saveResultsTemporary(_model, _scenario_i, variables):
             df['YEAR'] = [e[i.index('y')] if 'y' in i else np.nan for i, e in zip(df['INDICES'], df['ELEMENTS'])]
             df.drop(columns={'INDICES', 'ELEMENTS'}, inplace=True)
             return df
+
+
+def GIS_ExchangeCapacities(UseByTechnology, ProductionByTechnology):
+
+        #ProductionByTechnology
+        df = ProductionByTechnology
+        df = df.drop(['NAME', 'SCENARIO', 'REGION', 'REGION2', 'DAYTYPE', 'EMISSION', 'DAILYTIMEBRACKET', 'SEASON', 'MODE_OF_OPERATION', 'STORAGE'], axis = 1)
+        df = df.loc[df['FUEL'] == 'CONVHEAT']
+        #df = df.loc[df['VALUE'] != 0]
+        df.reset_index(drop=True, inplace=True)
+        df3 = df.loc[df['YEAR'] == df['YEAR'].max()]
+        df3.reset_index(drop=True, inplace=True)
+
+        #UseByTechnology
+        df1 = UseByTechnology
+        df1 = df1.drop(['NAME', 'SCENARIO', 'REGION', 'REGION2', 'DAYTYPE', 'EMISSION', 'DAILYTIMEBRACKET', 'SEASON', 'MODE_OF_OPERATION', 'STORAGE'], axis = 1)
+        df1 = df1.loc[df1['FUEL'] == 'DHWATER']
+        #df1 = df1.loc[df1['VALUE'] != 0]
+        df2 = df1.loc[df1['YEAR'] == df1['YEAR'].max()]
+        df2.reset_index(drop=True, inplace=True)
+
+        #Creating a combined data frame
+        df4 = df3.append(df2, ignore_index=False)
+        df4 = df4.drop(['FUEL'], axis = 1)
+   
+       #Changing to platform nomenclature - THIS MUST BE HASHED LATER 
+#         Tech_list = df4['TECHNOLOGY'].tolist()
+#         Assign = []
+#         for x in Tech_list:
+#             if "HEA" in x:
+#                 Assign.append('Sink1_HEX')
+#             elif "HEB" in x:
+#                 Assign.append('Sink2_HEX')
+#             elif "HEC" in x:
+#                 Assign.append('Sink3_HEX')
+#             elif "WHRB" in x:
+#                 Assign.append('Source1_WHRB') 
+#         df4['Assignment'] = Assign  
+#         df4 = df4.drop(['TECHNOLOGY'], axis = 1)
+#         df4 = df4[['VALUE', 'TIMESLICE', 'Assignment', 'YEAR']]
+#         df4.rename(columns={'Assignment': 'TECHNOLOGY'}, inplace=True)
+
+        #Source or Sink Aggregation
+        Tech_list1 = df4['TECHNOLOGY'].tolist()
+        Assign1 = []
+        for x in Tech_list1:
+            for i in range (1,500000):
+                if (','.join(["Source%d" % i ])) in x:
+                    Assign1.append(','.join(["Source%d" % i ]))
+            for j in range (1,500000):
+                if (','.join(["Sink%d" % j ])) in x:
+                    Assign1.append(','.join(["Sink%d" % j ]))
+        df4['Assignment'] = Assign1
+        df4 = df4.drop(['TECHNOLOGY'], axis = 1)
+        df4 = df4[['VALUE', 'TIMESLICE', 'Assignment', 'YEAR']]
+
+        #Creating a Pivot Table
+        table = pd.pivot_table(df4,index=['TIMESLICE'],columns=['Assignment'],values=['VALUE'],aggfunc=np.sum)
+
+        #Sorting the Pivot Table
+        sortedtable = table.reindex(table['VALUE'].sort_values(by=table.columns.droplevel(level = 0)[0], ascending=False).index)
+        append_df = sortedtable.head(table['VALUE', table.columns.droplevel(level = 0)[0]].value_counts()[table['VALUE', table.columns.droplevel(level = 0)[0]].max()])
+        for col_name in table.columns.droplevel(level = 0):
+            sortedtable = table.reindex(table['VALUE'].sort_values(by=col_name, ascending=False).index)
+            append_df = append_df.append(sortedtable.head(table['VALUE', col_name].value_counts()[table['VALUE', col_name].max()]))
+        #a = (sortedtable.iloc[0])
+        append_df1 = append_df.drop_duplicates()
+        append_df1.index.name = None
+        append_df1 = append_df1.transpose()
+
+
+        #Creating classification
+        append_df2 = append_df1.droplevel(level = 0)
+        append_df2 = append_df2.reset_index()
+        list1 = list(append_df2["Assignment"])
+
+        list2 = []
+
+        for x in list1:
+            if "Sink" in x:
+                list2.append('Sink')
+            else:
+                list2.append('Source')
+
+        Classification_Type = pd.Series(list2)
+        append_df2.insert(loc=1, column='Classification', value=Classification_Type)
+
+
+
+        #Creating ID
+
+        list4 = list(append_df2["Assignment"])
+
+        list5 = []
+
+        for x in list4:
+            for i in range (1,100):
+                if (','.join(["%d" % i ])) in x:
+                    list5.append(','.join(["%d" % i ]))
+
+        ID = pd.Series(list5)
+        append_df2.insert(loc=0, column='ID', value=ID)
+        append_df2.drop('Assignment', axis=1, inplace=True)
+
+        return(append_df2)      
+        
+        
+        
+def CreateResults(res_df):
+
+        Names_NZ = ['Cost', 'AccumulatedNewCapacity', 'AccumulatedNewStorageCapacity', 'AnnualVariableOperatingCost', 'AnnualFixedOperatingCost', 'AnnualTechnologyEmissionsPenalty', 'AnnualTechnologyEmission', 'NewCapacity', 'ProductionByTechnology', 'ProductionByTechnologyAnnual', 'StorageLevelTimesliceStart', 'StorageLosses', 'UseByTechnology']
+
+        Results_NZ = pd.DataFrame()
+
+        for name_nz in Names_NZ:
+            Results_NZ = Results_NZ.append((res_df[res_df['NAME'] == str(name_nz)]))
+
+            #Results_NZ = Results_NZ.loc[Results_NZ['VALUE'] != 0]
+
+        TEO_Results_NZ = {}
+        for name in Results_NZ['NAME'].unique():
+            TEO_Results_NZ[name] = Results_NZ[Results_NZ['NAME'] == str(name)]
+
+        ProductionByTechnology = TEO_Results_NZ['ProductionByTechnology']
+
+        UseByTechnology = TEO_Results_NZ['UseByTechnology']
+
+        ex_capacities1 = GIS_ExchangeCapacities(UseByTechnology, ProductionByTechnology)
+
+        ex_capacities = {'ex_capacities' : ex_capacities1}
+
+        Names_z = ['DiscountedCapitalInvestmentByTechnology', 'DiscountedCapitalInvestmentByStorage', 'DiscountedSalvageValueByTechnology', 'DiscountedSalvageValueByStorage']
+
+        TEO_Results_Z = {}
+
+        for name_z in Names_z:
+            TEO_Results_Z[name_z] = res_df[res_df['NAME'] == str(name_z)]
+
+
+        TEO_Results = {**TEO_Results_NZ, **TEO_Results_Z, **ex_capacities}
+
+        return(TEO_Results)
