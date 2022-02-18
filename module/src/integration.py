@@ -29,7 +29,7 @@ def _prepare_inputs(input_data):
 
 def _prepare_outputs(output_data):
 
-    output = open("./output.json", "x")
+    output = open("./output.json", "w")
     json.dump(output_data, output)
 
     return output_data
