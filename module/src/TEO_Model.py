@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import pulp
 import itertools
-from TEO_functions import *
+from .TEO_functions import *
 
 
 def buildmodel(sets_df, df, defaults_df, mcs_df, n):
@@ -574,13 +574,12 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
             },
             # 'UseByTechnologyAnnual': {'sets': [REGION, FUEL, TECHNOLOGY, YEAR], 'lb': 0, 'ub': None, 'cat': 'Continuous', 'indices': ['r', 'f', 't', 'y']},
             # 'RateOfUse': {'sets': [REGION, FUEL, TIMESLICE, YEAR], 'lb': 0, 'ub': None, 'cat': 'Continuous', 'indices': ['r', 'f', 'l', 'y']},
-            'UseByTechnology': 
-            {'sets': 
-             [REGION, FUEL, TIMESLICE, TECHNOLOGY, YEAR], 
-             'lb': 0, 
-             'ub': None, 
-             'cat': 'Continuous', 
-             'indices': ['r', 'f', 'l', 't', 'y']
+            "UseByTechnology": {
+                "sets": [REGION, FUEL, TIMESLICE, TECHNOLOGY, YEAR],
+                "lb": 0,
+                "ub": None,
+                "cat": "Continuous",
+                "indices": ["r", "f", "l", "t", "y"],
             },
             "Use": {
                 "sets": [REGION, FUEL, TIMESLICE, YEAR],
@@ -875,7 +874,7 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
         RateOfUseByTechnology = createVariable("RateOfUseByTechnology", variables)
         # UseByTechnologyAnnual = createVariable('UseByTechnologyAnnual', variables)
         # RateOfUse = createVariable('RateOfUse', variables)
-        UseByTechnology = createVariable('UseByTechnology', variables)
+        UseByTechnology = createVariable("UseByTechnology", variables)
         Use = createVariable("Use", variables)
         Trade = createVariable("Trade", variables)
         # TradeAnnual = createVariable('TradeAnnual', variables)
@@ -1222,13 +1221,13 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
                 "",
             )
 
-#         for rr2fly in REGION_REGION2_FUEL_TIMESLICE_YEAR:
-#             # EBa10_EnergyBalanceEachTS4
-#             model += (
-#                 Trade.get(ci(rr2fly))
-#                 == -Trade.get(ci([rr2fly[1], rr2fly[0], *rr2fly[2:5]])),
-#                 "",
-#             )
+        #         for rr2fly in REGION_REGION2_FUEL_TIMESLICE_YEAR:
+        #             # EBa10_EnergyBalanceEachTS4
+        #             model += (
+        #                 Trade.get(ci(rr2fly))
+        #                 == -Trade.get(ci([rr2fly[1], rr2fly[0], *rr2fly[2:5]])),
+        #                 "",
+        #             )
 
         # ====  Energy Balance B  ====
 
@@ -1277,7 +1276,12 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
                 "",
             )
             # Acc2_FuelUseByTechnology
-            model += UseByTechnology.get(ci(rflty)) == RateOfUseByTechnology.get(ci(rflty)) * YearSplit.get(ci([rflty[2], rflty[4]])), ""
+            model += (
+                UseByTechnology.get(ci(rflty))
+                == RateOfUseByTechnology.get(ci(rflty))
+                * YearSplit.get(ci([rflty[2], rflty[4]])),
+                "",
+            )
 
         for rmty in REGION_MODE_OF_OPERATION_TECHNOLOGY_YEAR:
             # Acc3_AverageAnnualRateOfActivity
@@ -2583,9 +2587,9 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
         del model  # Delete model
 
         i += 1
-        
+
         Results = {}
-        
+
         Results = CreateResults(res_df)
-        
-        return (Results)
+
+        return Results

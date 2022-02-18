@@ -1,3 +1,4 @@
+import json
 from .TEO_Model import buildmodel
 from .utilities import (
     create_parameters_dataframe,
@@ -28,4 +29,7 @@ def _prepare_inputs(input_data):
 
 def _prepare_outputs(output_data):
 
-    return output_data.to_dict("records")
+    output = open("./output.json", "x")
+    json.dump(output_data, output)
+
+    return output_data
