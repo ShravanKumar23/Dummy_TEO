@@ -7,35 +7,39 @@ from .gen_settings import DEFAULT_PARAM_SETTINGS
 def create_sets_dataframe(jData):
 
     # SETS (LOAD FROM JSON)
+    jData["DAYTYPE"] = []
+    jData["SEASON"] = []
+    jData["DAILYTIMEBRACKET"] = []
+    jData["FLEXIBLEDEMANDTYPE"] = []
+    jData["REGION2"] = []
 
     sets_df = {}
 
-    sets_df['REGION'] = pd.DataFrame(
-        jData['REGION'], columns=['REGION'], dtype=str)
-    sets_df['REGION2'] = pd.DataFrame(
-        jData['REGION2'], columns=['REGION2'], dtype=str)
-    sets_df['DAYTYPE'] = pd.DataFrame(
-        jData['DAYTYPE'], columns=['DAYTYPE'], dtype=str)
-    sets_df['EMISSION'] = pd.DataFrame(
-        jData['EMISSION'], columns=['EMISSION'], dtype=str)
-    sets_df['FUEL'] = pd.DataFrame(
-        jData['FUEL'], columns=['FUEL'], dtype=str)
-    sets_df['DAILYTIMEBRACKET'] = pd.DataFrame(
-        jData['DAILYTIMEBRACKET'], columns=['DAILYTIMEBRACKET'], dtype=str)
-    sets_df['SEASON'] = pd.DataFrame(
-        jData['SEASON'], columns=['SEASON'], dtype=str)
-    sets_df['TIMESLICE'] = pd.DataFrame(
-        jData['TIMESLICE'], columns=['TIMESLICE'], dtype=str)
-    sets_df['MODE_OF_OPERATION'] = pd.DataFrame(
-        jData['MODE_OF_OPERATION'], columns=['MODE_OF_OPERATION'], dtype=str)
-    sets_df['STORAGE'] = pd.DataFrame(
-        jData['STORAGE'], columns=['STORAGE'], dtype=str)
-    sets_df['TECHNOLOGY'] = pd.DataFrame(
-        jData['TECHNOLOGY'], columns=['TECHNOLOGY'], dtype=str)
-    sets_df['YEAR'] = pd.DataFrame(
-        jData['YEAR'], columns=['YEAR'], dtype=str)
-    sets_df['FLEXIBLEDEMANDTYPE'] = pd.DataFrame(
-        jData['FLEXIBLEDEMANDTYPE'], columns=['FLEXIBLEDEMANDTYPE'], dtype=str)
+    sets_df["REGION"] = pd.DataFrame(jData["REGION"], columns=["REGION"], dtype=str)
+    sets_df["REGION2"] = pd.DataFrame(jData["REGION2"], columns=["REGION2"], dtype=str)
+    sets_df["DAYTYPE"] = pd.DataFrame(jData["DAYTYPE"], columns=["DAYTYPE"], dtype=str)
+    sets_df["EMISSION"] = pd.DataFrame(
+        jData["EMISSION"], columns=["EMISSION"], dtype=str
+    )
+    sets_df["FUEL"] = pd.DataFrame(jData["FUEL"], columns=["FUEL"], dtype=str)
+    sets_df["DAILYTIMEBRACKET"] = pd.DataFrame(
+        jData["DAILYTIMEBRACKET"], columns=["DAILYTIMEBRACKET"], dtype=str
+    )
+    sets_df["SEASON"] = pd.DataFrame(jData["SEASON"], columns=["SEASON"], dtype=str)
+    sets_df["TIMESLICE"] = pd.DataFrame(
+        jData["TIMESLICE"], columns=["TIMESLICE"], dtype=str
+    )
+    sets_df["MODE_OF_OPERATION"] = pd.DataFrame(
+        jData["MODE_OF_OPERATION"], columns=["MODE_OF_OPERATION"], dtype=str
+    )
+    sets_df["STORAGE"] = pd.DataFrame(jData["STORAGE"], columns=["STORAGE"], dtype=str)
+    sets_df["TECHNOLOGY"] = pd.DataFrame(
+        jData["TECHNOLOGY"], columns=["TECHNOLOGY"], dtype=str
+    )
+    sets_df["YEAR"] = pd.DataFrame(jData["YEAR"], columns=["YEAR"], dtype=str)
+    sets_df["FLEXIBLEDEMANDTYPE"] = pd.DataFrame(
+        jData["FLEXIBLEDEMANDTYPE"], columns=["FLEXIBLEDEMANDTYPE"], dtype=str
+    )
 
     return sets_df
 
@@ -58,13 +62,14 @@ def create_parameters_dataframe(sets_df, default_df):
         "STORAGE",
         "MODE_OF_OPERATION",
         "TECHNOLOGY",
-        "YEAR"]
+        "YEAR",
+    ]
 
     df = pd.DataFrame(columns=default_columns)
 
     for index, row in default_df.iterrows():
-        value_default = row['VALUE']
-        param = row['PARAM']
+        value_default = row["VALUE"]
+        param = row["PARAM"]
 
         # Count Values
         count = 1
@@ -104,8 +109,7 @@ def create_parameters_default_dataframe(jData):
     defaults_df = pd.DataFrame(jData)
     defaults_df.fillna(0)
 
-    defaults_df['PARAM'] = defaults_df['PARAM'].astype(str)
-    defaults_df['VALUE'] = defaults_df['VALUE'].apply(
-        pd.to_numeric, downcast='signed')
+    defaults_df["PARAM"] = defaults_df["PARAM"].astype(str)
+    defaults_df["VALUE"] = defaults_df["VALUE"].apply(pd.to_numeric, downcast="signed")
 
     return defaults_df
