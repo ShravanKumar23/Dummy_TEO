@@ -97,7 +97,7 @@ def create_parameters_dataframe(sets_df, default_df):
         gen_df = pd.DataFrame(gen_param).transpose()
         df = df.append(gen_df)
         # ACTIVATE BREAK FOR ONLY FIRST PARAMETER OF DEFAULT_PARAMETERS
-        break
+        #break
 
     return df
 
