@@ -1606,7 +1606,7 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
                         if TechnologyToStorage.get(
                             ci(([*rsly[0:2], *mt])), dflt.get("TechnologyToStorage")
                         )
-                        > 0
+                        > 0.001
                     ]
                 ),
                 "",
@@ -1624,7 +1624,7 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
                         if TechnologyFromStorage.get(
                             ci([*rsly[0:2], *mt]), dflt.get("TechnologyFromStorage")
                         )
-                        > 0
+                        > 0.001
                     ]
                 ),
                 "",
@@ -1677,7 +1677,7 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
                             ci(([*rs[0:2], *lmty[1:3]])),
                             dflt.get("TechnologyToStorage"),
                         )
-                        > 0
+                        > 0.001
                     ]
                 )
                 - pulp.lpSum(
@@ -1693,7 +1693,7 @@ def buildmodel(sets_df, df, defaults_df, mcs_df, n):
                             ci([*rs[0:2], *lmty[1:3]]),
                             dflt.get("TechnologyFromStorage"),
                         )
-                        > 0
+                        > 0.001
                     ]
                 ),
                 "",
