@@ -11,9 +11,18 @@ def prepare_inputs(sets_df, df, input_data):
     input_platform = input_data["platform"]
     input_gis = input_data["gis-module"]
     input_cf = input_data["cf-module"]
-
+    import pandas as pd
     sets_df = sets_df
     df = df
+    technologies_cf = pd.DataFrame(input_cf['technologies_cf'])
+    specified_annual_demand_cf = pd.DataFrame(input_cf['specified_annual_demand_cf'])
+    specified_demand_profile_cf = pd.DataFrame(input_cf['specified_demand_profile_cf'])
+    capacity_factor_cf = pd.DataFrame(input_cf['capacity_factor_cf'])
+    platform_technologies= pd.DataFrame(input_platform['platform_technologies'])
+    platform_storages = pd.DataFrame(input_platform['platform_storages'])
+    platform_annual_emission_limit = pd.DataFrame(input_platform['platform_annual_emission_limit'])
+    platform_technology_to_storage = pd.DataFrame(input_platform['platform_technology_to_storage'])
+    
     # GIS_LOSSES
     df555 = input_gis
     loss_list198 = df555["losses_in_kw"]
@@ -254,6 +263,18 @@ def prepare_inputs(sets_df, df, input_data):
     Fuel_list197 = df482["input_fuel"].tolist()
     df4 = df.loc[df["PARAM"] == "InputActivityRatio"]
 
+    Tech_list1971 = []
+    Fuel_list1971 = []
+    Value_list1971 = []
+    for l in range(len(Fuel_list197)):
+        if (Fuel_list197[l] != ''):
+            Tech_list1971.append(Tech_list197[l])
+            Fuel_list1971.append(Fuel_list197[l])
+            Value_list1971.append(Value_list197[l])
+
+    Tech_list197 = Tech_list1971
+    Value_list197 = Value_list1971
+    Fuel_list197 = Fuel_list1971
     Tech_list4 = df4["TECHNOLOGY"].tolist()
     Tech_list4d = []
 
@@ -304,6 +325,7 @@ def prepare_inputs(sets_df, df, input_data):
                     for z in Year_list4d:
                         Counterstring = str(str(x) + str(y))
                         if b4 in y and c4 in x:
+                            #print(str(str(x) + str(y)))
                             Assign4.append(a4)
                             Assign4f.append(x)
                             Assign4m.append(w)
@@ -312,7 +334,7 @@ def prepare_inputs(sets_df, df, input_data):
                         elif (b4 not in y and c4 not in x) and Counter.count(
                             Counterstring
                         ) < maxcounter1:
-                            # print(str(str(x) + str(y)))
+                            #print(str(str(x) + str(y)))
                             Assign4.append(0)
                             Assign4f.append(x)
                             Assign4m.append(w)
@@ -321,6 +343,7 @@ def prepare_inputs(sets_df, df, input_data):
                         elif (b4 in y and c4 not in x) and Counter.count(
                             Counterstring
                         ) < maxcounter1:
+                            #print(str(str(x) + str(y)))
                             Assign4.append(0)
                             Assign4f.append(x)
                             Assign4m.append(w)
@@ -328,16 +351,28 @@ def prepare_inputs(sets_df, df, input_data):
                             Assign4y.append(z)
                         elif (
                             (b4 not in y and c4 in x)
-                            and (Fuel_list198.count(y) == 1)
-                            and Counter.count(Counterstring) < maxcounter2
+                            and (Fuel_list197.count(x) == 1)
+                            and Counter.count(Counterstring) < maxcounter1
                         ):
-                            # print(str(str(x) + str(y)))
+                            #print(str(str(x) + str(y)))
+                            Assign4.append(0)
+                            Assign4f.append(x)
+                            Assign4m.append(w)
+                            Assign4t.append(y)
+                            Assign4y.append(z)
+                        elif (
+                            (y not in Tech_list197 and x in Fuel_list4d)
+                            and Counter.count(Counterstring) < maxcounter1
+                        ):
+                            #print(str(str(x) + str(y)))
                             Assign4.append(0)
                             Assign4f.append(x)
                             Assign4m.append(w)
                             Assign4t.append(y)
                             Assign4y.append(z)
                         Counter.append(Counterstring)
+
+
     len(Assign4)
     df4["Assignment"] = Assign4
     df4["Assignmentf"] = Assign4f
@@ -379,6 +414,7 @@ def prepare_inputs(sets_df, df, input_data):
     df = df.loc[df["PARAM"] != "InputActivityRatio"]
     df = df.reset_index(drop=True)
     df = df.append(df4, ignore_index=True)
+    df
 
     # CFCAPITALCOSTS
     import itertools
@@ -406,7 +442,7 @@ def prepare_inputs(sets_df, df, input_data):
         b5 = Tech_list197[j]
 
         for y in Tech_list5:
-            if str(b5) in y:
+            if b5 in y:
                 Assign5.append(a5)
             else:
                 Assign5.append(0)
@@ -1139,7 +1175,7 @@ def prepare_inputs(sets_df, df, input_data):
     df
 
     # PLATFORMAVAILABILITYFACTOR
-    df472 = input_platform["platform_technologies"]
+    df472 = platform_technologies
     Tech_list173 = df472["technology"].tolist()
     Value_list173 = df472["availability_factor"].tolist()
     Assign13 = []
@@ -1153,7 +1189,7 @@ def prepare_inputs(sets_df, df, input_data):
             Year_list13d.append(i)
     for j in range(0, len(Tech_list173)):
 
-        a13 = -1 + int(Value_list173[j])
+        a13 = -1 + Value_list173[j]
         Tech_list13
         b13 = Tech_list173[j]
         for y in Tech_list13:
@@ -2854,7 +2890,7 @@ def prepare_inputs(sets_df, df, input_data):
 
     for j in range(0, len(Tech_list117)):
 
-        a35 = int(Value_list117[j])
+        a35 = Value_list117[j]
 
         b35 = Tech_list117[j]
 
@@ -2931,12 +2967,12 @@ def prepare_inputs(sets_df, df, input_data):
 
     for j in range(0, len(Tech_list116)):
 
-        a36 = int(Value_list116[j])
+        a36 = Value_list116[j]
 
         b36 = Tech_list116[j]
 
         for y in Tech_list36:
-            if str(b36) in y and (int(Value_list116[j]) > 0):
+            if str(b36) in y:
                 Assign36.append(a36)
             else:
                 Assign36.append(0)
@@ -3005,12 +3041,12 @@ def prepare_inputs(sets_df, df, input_data):
 
     for j in range(0, len(Tech_list115)):
 
-        a37 = int(Value_list115[j])
+        a37 = Value_list115[j]
 
         b37 = Tech_list115[j]
 
         for y in Tech_list37:
-            if str(b37) in y and (int(Value_list115[j]) > 0):
+            if str(b37) in y:
                 Assign37.append(a37)
             else:
                 Assign37.append(0)
@@ -3080,12 +3116,12 @@ def prepare_inputs(sets_df, df, input_data):
 
     for j in range(0, len(Tech_list115)):
 
-        a38 = int(Value_list115[j])
+        a38 = Value_list115[j]
 
         b38 = Tech_list115[j]
 
         for y in Tech_list38:
-            if str(b38) in y and (int(Value_list115[j]) > 0):
+            if str(b38) in y:
                 Assign38.append(a38)
             else:
                 Assign38.append(0)
@@ -3139,9 +3175,10 @@ def prepare_inputs(sets_df, df, input_data):
     Tech_list114 = df471["technology"].tolist()
     Tech_list114
     Value_list114 = df471["annual_activity_upper_limit"].tolist()
+    Value_list114
     Assign39 = []
     df39 = df.loc[df["PARAM"] == "TotalTechnologyAnnualActivityUpperLimit"]
-    c39 = -99999
+
 
     Tech_list39 = df39["TECHNOLOGY"].tolist()
     Tech_list39
@@ -3155,7 +3192,7 @@ def prepare_inputs(sets_df, df, input_data):
 
     for j in range(0, len(Tech_list114)):
 
-        a39 = c39 + int(Value_list114[j])
+        a39 =  Value_list114[j]
 
         b39 = Tech_list114[j]
 
@@ -3210,6 +3247,7 @@ def prepare_inputs(sets_df, df, input_data):
     df = df.reset_index(drop=True)
     df39 = df39.reset_index(drop=True)
     df = df.append(df39, ignore_index=True)
+    df
 
     # PLATFORMTotalTotalTechnologyModelPeriodActivityLowerLimit
     df405 = platform_technologies
@@ -3221,7 +3259,7 @@ def prepare_inputs(sets_df, df, input_data):
 
     for j in range(0, len(Tech_list113)):
 
-        a40 = int(Value_list113[j])
+        a40 = Value_list113[j]
         Tech_list40 = df40["TECHNOLOGY"].tolist()
         Tech_list40
         b40 = Tech_list113[j]
@@ -3234,7 +3272,7 @@ def prepare_inputs(sets_df, df, input_data):
                 Tech_list40d.append(i)
 
         for y in Tech_list40d:
-            if str(b40) in y and (int(Value_list113[j]) > 0):
+            if str(b40) in y:
                 Assign40.append(a40)
             else:
                 Assign40.append(0)
@@ -3293,9 +3331,9 @@ def prepare_inputs(sets_df, df, input_data):
                 Tech_list41d.append(i)
 
         for y in Tech_list41d:
-            if b41 in y and a41 != 0.001:
+            if b41 in y and a41 != 0:
                 Assign41.append(-99999 + a41)
-            elif b41 in y and a41 == 0.001:
+            elif b41 in y and a41 == 0:
                 Assign41.append(a41)
             else:
                 Assign41.append(0)
