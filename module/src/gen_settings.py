@@ -7,7 +7,7 @@ DEFAULT_PARAM_SETTINGS = {
     "CapacityFactor": ["YEAR", "TIMESLICE", "TECHNOLOGY", "REGION"],
     "CapacityOfOneTechnologyUnit": ["YEAR", "TECHNOLOGY", "REGION"],
     "CapacityToActivityUnit": ["REGION", "TECHNOLOGY",],
-    "CapitalCost": ["REGION", "TECHNOLOGY", "YEAR"],
+    "CapitalCost": ["YEAR","TECHNOLOGY", "REGION"],
     "CapitalCostStorage": ["YEAR", "STORAGE", "REGION"],
     "Conversionld": ["TIMESLICE", "DAYTYPE", ],
     "Conversionlh": ["TIMESLICE", "DAILYTIMEBRACKET", ],
