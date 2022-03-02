@@ -115,7 +115,6 @@ def prepare_inputs(sets_df, df, input_data):
     Value_list198 = df483["output"].tolist()
     Fuel_list198 = df483["output_fuel"].tolist()
     df3 = df.loc[df["PARAM"] == "OutputActivityRatio"]
-
     Tech_list3 = df3["TECHNOLOGY"].tolist()
     Tech_list3d = []
 
@@ -145,6 +144,7 @@ def prepare_inputs(sets_df, df, input_data):
             MO_list3d.append(l)
 
     maxcounter2 = len(MO_list3d) * len(Year_list3d)
+    maxcounter2
     Assign3 = []
     Assign3f = []
     Assign3t = []
@@ -152,7 +152,12 @@ def prepare_inputs(sets_df, df, input_data):
     Assign3y = []
     Counter = []
     CounterY = []
+    identifier = []
 
+    for o in range(0, len(Tech_list198)):
+        identifier.append(str(Fuel_list198[o] + Tech_list198[o]))
+
+    identifier
     for j in range(0, len(Tech_list198)):
         a3 = Value_list198[j]
         b3 = Tech_list198[j]
@@ -166,10 +171,8 @@ def prepare_inputs(sets_df, df, input_data):
                         if (
                             (b3) in y
                             and (c3) in x
-                            and CounterY.count(Counterstring) < maxcounter2
                         ):
-                            CounterY.append(Counterstring)
-                            # print(str(str(x) + str(y)))
+                            #print(str(str(x) + str(y)))
                             Assign3.append(a3)
                             Assign3f.append(x)
                             Assign3m.append(w)
@@ -177,40 +180,44 @@ def prepare_inputs(sets_df, df, input_data):
                             Assign3y.append(z)
                         elif (
                             (b3 not in y and c3 not in x)
-                            and (x not in Tech_list198 and y not in Fuel_list198)
+                             and (Counterstring not in identifier)
                             and (Counter.count(Counterstring) < maxcounter2)
                         ):
-                            # print(str(str(x) + str(y)))
+                            #print(str(str(x) + str(y)))
                             Assign3.append(0)
                             Assign3f.append(x)
                             Assign3m.append(w)
                             Assign3t.append(y)
                             Assign3y.append(z)
                         elif (
-                            (b3 in y and c3 not in x)
-                            and (x not in Tech_list198 and y not in Fuel_list198)
+                            (b3 not in y or c3 not in x)
+                            and (Counterstring not in identifier)
                             and Counter.count(Counterstring) < maxcounter2
                         ):
-                            # print(str(str(x) + str(y)))
+                            #print(str(str(x) + str(y)))
                             Assign3.append(0)
                             Assign3f.append(x)
                             Assign3m.append(w)
                             Assign3t.append(y)
                             Assign3y.append(z)
-                        elif (
-                            (b3 not in y and c3 in x)
-                            and (Fuel_list198.count(y) == 1)
-                            and (x not in Tech_list198)
-                            and (y not in Fuel_list198)
-                            and Counter.count(Counterstring) < maxcounter2
-                        ):
-                            # print(str(str(x) + str(y)))
-                            Assign3.append(0)
-                            Assign3f.append(x)
-                            Assign3m.append(w)
-                            Assign3t.append(y)
-                            Assign3y.append(z)
+                        # elif (
+                        #     (b3 not in y and c3 in x)
+                        #     #and (Fuel_list198.count(y) == 1)
+                        #     and (y not in Tech_list198)
+                        #     and Counter.count(Counterstring) < maxcounter2
+                        # ):
+                        #     #print(str(str(x) + str(y)))
+                        #     Assign3.append(0)
+                        #     Assign3f.append(x)
+                        #     Assign3m.append(w)
+                        #     Assign3t.append(y)
+                        #     Assign3y.append(z)
                         Counter.append(Counterstring)
+    counterd = []
+    for m in Counter:
+        if m not in counterd:
+            counterd.append(m)
+    counterd
     len(Assign3)
     df3["Assignment"] = Assign3
     df3["Assignmentf"] = Assign3f
@@ -233,28 +240,27 @@ def prepare_inputs(sets_df, df, input_data):
     df3.rename(columns={"Assignmenty": "YEAR"}, inplace=True)
     df3 = df3[
         [
-            "PARAM",
-            "VALUE",
-            "REGION",
-            "REGION2",
-            "DAYTYPE",
-            "EMISSION",
-            "FUEL",
-            "DAILYTIMEBRACKET",
-            "SEASON",
-            "TIMESLICE",
-            "STORAGE",
-            "MODE_OF_OPERATION",
-            "TECHNOLOGY",
-            "YEAR",
-        ]
+        "PARAM",
+        "VALUE",
+        "REGION",
+        "REGION2",
+        "DAYTYPE",
+        "EMISSION",
+        "FUEL",
+        "DAILYTIMEBRACKET",
+        "SEASON",
+        "TIMESLICE",
+        "STORAGE",
+        "MODE_OF_OPERATION",
+        "TECHNOLOGY",
+        "YEAR",
+    ]
     ]
     df3 = df3.reset_index(drop=True)
     df3
     df = df.loc[df["PARAM"] != "OutputActivityRatio"]
     df = df.reset_index(drop=True)
     df = df.append(df3, ignore_index=True)
-    df
 
     # IAR
     df482 = technologies_cf
@@ -311,13 +317,16 @@ def prepare_inputs(sets_df, df, input_data):
     Assign4m = []
     Assign4y = []
     Counter = []
+    identifier1 = []
+
+    for o in range(0, len(Tech_list197)):
+        identifier1.append(str(Fuel_list197[o] + Tech_list197[o]))
 
     for j in range(0, len(Tech_list197)):
 
         a4 = Value_list197[j]
         b4 = Tech_list197[j]
         c4 = Fuel_list197[j]
-        # Counterstring = str(str(b4) + str(c4))
 
         for x in Fuel_list4d:
             for w in MO_list4d:
@@ -331,7 +340,7 @@ def prepare_inputs(sets_df, df, input_data):
                             Assign4m.append(w)
                             Assign4t.append(y)
                             Assign4y.append(z)
-                        elif (b4 not in y and c4 not in x) and Counter.count(
+                        elif (b4 not in y and c4 not in x) and (Counterstring not in identifier1) and Counter.count(
                             Counterstring
                         ) < maxcounter1:
                             #print(str(str(x) + str(y)))
@@ -340,7 +349,7 @@ def prepare_inputs(sets_df, df, input_data):
                             Assign4m.append(w)
                             Assign4t.append(y)
                             Assign4y.append(z)
-                        elif (b4 in y and c4 not in x) and Counter.count(
+                        elif (b4 not in y or c4 not in x) and (Counterstring not in identifier1) and Counter.count(
                             Counterstring
                         ) < maxcounter1:
                             #print(str(str(x) + str(y)))
@@ -349,27 +358,27 @@ def prepare_inputs(sets_df, df, input_data):
                             Assign4m.append(w)
                             Assign4t.append(y)
                             Assign4y.append(z)
-                        elif (
-                            (b4 not in y and c4 in x)
-                            and (Fuel_list197.count(x) == 1)
-                            and Counter.count(Counterstring) < maxcounter1
-                        ):
-                            #print(str(str(x) + str(y)))
-                            Assign4.append(0)
-                            Assign4f.append(x)
-                            Assign4m.append(w)
-                            Assign4t.append(y)
-                            Assign4y.append(z)
-                        elif (
-                            (y not in Tech_list197 and x in Fuel_list4d)
-                            and Counter.count(Counterstring) < maxcounter1
-                        ):
-                            #print(str(str(x) + str(y)))
-                            Assign4.append(0)
-                            Assign4f.append(x)
-                            Assign4m.append(w)
-                            Assign4t.append(y)
-                            Assign4y.append(z)
+                        # elif (
+                        #     (b4 not in y and c4 in x)
+                        #     and (Fuel_list197.count(x) == 1)
+                        #     and Counter.count(Counterstring) < maxcounter1
+                        # ):
+                        #     #print(str(str(x) + str(y)))
+                        #     Assign4.append(0)
+                        #     Assign4f.append(x)
+                        #     Assign4m.append(w)
+                        #     Assign4t.append(y)
+                        #     Assign4y.append(z)
+                        # elif (
+                        #     (y not in Tech_list197 and x in Fuel_list4d)
+                        #     and Counter.count(Counterstring) < maxcounter1
+                        # ):
+                        #     #print(str(str(x) + str(y)))
+                        #     Assign4.append(0)
+                        #     Assign4f.append(x)
+                        #     Assign4m.append(w)
+                        #     Assign4t.append(y)
+                        #     Assign4y.append(z)
                         Counter.append(Counterstring)
 
 
@@ -414,7 +423,6 @@ def prepare_inputs(sets_df, df, input_data):
     df = df.loc[df["PARAM"] != "InputActivityRatio"]
     df = df.reset_index(drop=True)
     df = df.append(df4, ignore_index=True)
-    df
 
     # CFCAPITALCOSTS
     import itertools
