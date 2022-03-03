@@ -2022,82 +2022,82 @@ def prepare_inputs(sets_df, df, input_data):
     df
 
     # PLATFORMStoragetagcooling
-    df464 = platform_storages
-    Sto_list125 = df464["storage"].tolist()
+#     df464 = platform_storages
+#     Sto_list125 = df464["storage"].tolist()
 
-    Value_list125 = df464["tag_cooling"].tolist()
+#     Value_list125 = df464["tag_cooling"].tolist()
 
-    Assign24 = []
+#     Assign24 = []
 
-    df24 = df.loc[df["PARAM"] == "Storagetagcooling"]
-    df24
-    Sto_list24 = df24["STORAGE"].tolist()
-    Sto_list24
+#     df24 = df.loc[df["PARAM"] == "Storagetagcooling"]
+#     df24
+#     Sto_list24 = df24["STORAGE"].tolist()
+#     Sto_list24
 
-    Year_list24 = df24["YEAR"].tolist()
-    Year_list24d = []
+#     Year_list24 = df24["YEAR"].tolist()
+#     Year_list24d = []
 
-    for i in Year_list24:
-        if i not in Year_list24d:
-            Year_list24d.append(i)
+#     for i in Year_list24:
+#         if i not in Year_list24d:
+#             Year_list24d.append(i)
 
-    for j in range(0, len(Sto_list125)):
+#     for j in range(0, len(Sto_list125)):
 
-        a24 = Value_list125[j]
+#         a24 = Value_list125[j]
 
-        b24 = Sto_list125[j]
+#         b24 = Sto_list125[j]
 
-        for y in Sto_list24:
-            if b24 in y:
-                Assign24.append(a24)
-            else:
-                Assign24.append(0)
+#         for y in Sto_list24:
+#             if b24 in y:
+#                 Assign24.append(a24)
+#             else:
+#                 Assign24.append(0)
 
-    Assign24
-    chunked_list = list()
-    chunk_size = len(Year_list24d)
-    for i in range(0, len(Assign24), chunk_size):
-        chunked_list.append(Assign24[i : i + chunk_size])
-    chunked_list
+#     Assign24
+#     chunked_list = list()
+#     chunk_size = len(Year_list24d)
+#     for i in range(0, len(Assign24), chunk_size):
+#         chunked_list.append(Assign24[i : i + chunk_size])
+#     chunked_list
 
-    chunked_list1 = list()
+#     chunked_list1 = list()
 
-    for k in range(0, len(chunked_list)):
-        O = sum(chunked_list[k])
-        if O != 0:
-            chunked_list1.append(chunked_list[k])
-    chunked_list1
+#     for k in range(0, len(chunked_list)):
+#         O = sum(chunked_list[k])
+#         if O != 0:
+#             chunked_list1.append(chunked_list[k])
+#     chunked_list1
 
-    Assign24 = list(itertools.chain(*chunked_list1))
-    df24["Assignment"] = Assign24
-    sum_column = df24["Assignment"] + df24["VALUE"]
-    df24["SUM"] = sum_column
-    df24.drop("VALUE", axis=1, inplace=True)
-    df24.drop("Assignment", axis=1, inplace=True)
-    df24.rename(columns={"SUM": "VALUE"}, inplace=True)
-    df24 = df24[
-        [
-            "PARAM",
-            "VALUE",
-            "REGION",
-            "REGION2",
-            "DAYTYPE",
-            "EMISSION",
-            "FUEL",
-            "DAILYTIMEBRACKET",
-            "SEASON",
-            "TIMESLICE",
-            "STORAGE",
-            "MODE_OF_OPERATION",
-            "TECHNOLOGY",
-            "YEAR",
-        ]
-    ]
-    df = df.loc[df["PARAM"] != "Storagetagcooling"]
-    df = df.reset_index(drop=True)
-    df24 = df24.reset_index(drop=True)
-    df = df.append(df24, ignore_index=True)
-    df
+#     Assign24 = list(itertools.chain(*chunked_list1))
+#     df24["Assignment"] = Assign24
+#     sum_column = df24["Assignment"] + df24["VALUE"]
+#     df24["SUM"] = sum_column
+#     df24.drop("VALUE", axis=1, inplace=True)
+#     df24.drop("Assignment", axis=1, inplace=True)
+#     df24.rename(columns={"SUM": "VALUE"}, inplace=True)
+#     df24 = df24[
+#         [
+#             "PARAM",
+#             "VALUE",
+#             "REGION",
+#             "REGION2",
+#             "DAYTYPE",
+#             "EMISSION",
+#             "FUEL",
+#             "DAILYTIMEBRACKET",
+#             "SEASON",
+#             "TIMESLICE",
+#             "STORAGE",
+#             "MODE_OF_OPERATION",
+#             "TECHNOLOGY",
+#             "YEAR",
+#         ]
+#     ]
+#     df = df.loc[df["PARAM"] != "Storagetagcooling"]
+#     df = df.reset_index(drop=True)
+#     df24 = df24.reset_index(drop=True)
+#     df = df.append(df24, ignore_index=True)
+#     df
 
     # PLATFORMStorageReturnTemperature
     df463 = platform_storages
@@ -2688,7 +2688,6 @@ def prepare_inputs(sets_df, df, input_data):
 
     # PLATFORMTechnologyFromStorage
     import itertools
-
     df485 = platform_technology_to_storage
     Tech_list113 = df485["technology"].tolist()
     Value_list113 = df485["technologyfromstorage"].tolist()
@@ -2722,43 +2721,64 @@ def prepare_inputs(sets_df, df, input_data):
         if l not in MO_list33d:
             MO_list33d.append(l)
 
-    for w in MO_list33d:
-        for k in range(0, len(Tech_list113)):
+    identifier33 = []
+
+    for o in range(0, len(Tech_list113)):
+        identifier33.append(str(Sto_list113[o] + Tech_list113[o]))
+
+    identifier33
+    Assign33m = []
+    Assign33s = []
+    Assign33t = []
+    Counter33 = []
+    maxcounter33 = len(MO_list33d)
+    maxcounter33
+    for k in range(0, len(Tech_list113)):
             a33 = Value_list113[k]
             b33 = Tech_list113[k]
             c33 = Sto_list113[k]
-            for x in Sto_list33d:
-                for y in Tech_list33d:
-                    if (b33) in y and (c33) in x:
-                        Assign33.append(a33)
-                    else:
-                        Assign33.append(0)
+            for w in MO_list33d:
+                for x in Sto_list33d:
+                    for y in Tech_list33d:
+                        Counterstring33 = str(str(x) + str(y))
+                        if (b33) in y and (c33) in x:
+                            #print(str(str(x) + str(y) + '1'))
+                            Assign33.append(a33)
+                            Assign33m.append(w)
+                            Assign33s.append(x)
+                            Assign33t.append(y)
+                        elif (((b33) not in y) or ((c33) not in x)) and (Counterstring33 not in identifier33) and (Counter33.count(Counterstring33) < maxcounter33):
+                            #print(print(str(str(x) + str(y)+ '0')))
+                            Assign33.append(0)
+                            Assign33m.append(w)
+                            Assign33s.append(x)
+                            Assign33t.append(y)
+                        Counter33.append(Counterstring33)
 
     Assign33
-
-    chunked_list33 = list()
-    chunk_size33 = len(Tech_list113)
-    for i in range(0, len(Assign33), chunk_size33):
-        chunked_list33.append(Assign33[i : i + chunk_size33])
-    chunked_list33
-
-    chunked_list331 = list()
-
-    for k in range(0, len(chunked_list33)):
-        O = sum(chunked_list33[k])
-        if O != 0:
-            chunked_list331.append(chunked_list33[k])
-
-    chunked_list331
-    Assign33 = list(itertools.chain(*chunked_list331))
+    len(Assign33)
+    Assign34 = []
+    for r in range(0,len(Assign33)):
+        Assign34.append(int(Assign33[r]))
+    Assign34
+    Assign33 = Assign34
     Assign33
-
     df33["Assignment"] = Assign33
+    df33["Assignmentm"] = Assign33m
+    df33["Assignmentt"] = Assign33t
+    df33["Assignments"] = Assign33s
+    df33
     sum_column = df33["Assignment"] + df33["VALUE"]
     df33["SUM"] = sum_column
     df33.drop("VALUE", axis=1, inplace=True)
+    df33.drop("TECHNOLOGY", axis=1, inplace=True)
+    df33.drop("MODE_OF_OPERATION", axis=1, inplace=True)
+    df33.drop("STORAGE", axis=1, inplace=True)
     df33.drop("Assignment", axis=1, inplace=True)
     df33.rename(columns={"SUM": "VALUE"}, inplace=True)
+    df33.rename(columns={"Assignments": "STORAGE"}, inplace=True)
+    df33.rename(columns={"Assignmentm": "MODE_OF_OPERATION"}, inplace=True)
+    df33.rename(columns={"Assignmentt": "TECHNOLOGY"}, inplace=True)
     df33 = df33[
         [
             "PARAM",
@@ -2777,15 +2797,15 @@ def prepare_inputs(sets_df, df, input_data):
             "YEAR",
         ]
     ]
-    df33.head(50)
+    df33
     df = df.loc[df["PARAM"] != "TechnologyFromStorage"]
     df = df.reset_index(drop=True)
     df33 = df33.reset_index(drop=True)
     df = df.append(df33, ignore_index=True)
+    df
 
     # PLATFORMTechnologyToStorage
     import itertools
-
     df484 = platform_technology_to_storage
     Tech_list112 = df484["technology"].tolist()
     Value_list112 = df484["technologytostorage"].tolist()
@@ -2819,42 +2839,64 @@ def prepare_inputs(sets_df, df, input_data):
         if l not in MO_list34d:
             MO_list34d.append(l)
 
-    for w in MO_list34d:
-        for k in range(0, len(Tech_list112)):
+    identifier34 = []
+
+    for o in range(0, len(Tech_list112)):
+        identifier34.append(str(Sto_list112[o] + Tech_list112[o]))
+
+    identifier34
+    Assign34m = []
+    Assign34s = []
+    Assign34t = []
+    Counter34 = []
+    maxcounter34 = len(MO_list34d)
+    maxcounter34
+    for k in range(0, len(Tech_list112)):
             a34 = Value_list112[k]
             b34 = Tech_list112[k]
             c34 = Sto_list112[k]
-            for x in Sto_list34d:
-                for y in Tech_list34d:
-                    if (b34) in y and (c34) in x:
-                        Assign34.append(a34)
-                    else:
-                        Assign34.append(0)
+            for w in MO_list34d:
+                for x in Sto_list34d:
+                    for y in Tech_list34d:
+                        Counterstring34 = str(str(x) + str(y))
+                        if (b34) in y and (c34) in x:
+                            #print(str(str(x) + str(y) + '1'))
+                            Assign34.append(a34)
+                            Assign34m.append(w)
+                            Assign34s.append(x)
+                            Assign34t.append(y)
+                        elif (((b34) not in y) or ((c34) not in x)) and (Counterstring34 not in identifier34) and (Counter34.count(Counterstring34) < maxcounter34):
+                            #print(print(str(str(x) + str(y)+ '0')))
+                            Assign34.append(0)
+                            Assign34m.append(w)
+                            Assign34s.append(x)
+                            Assign34t.append(y)
+                        Counter34.append(Counterstring34)
 
     Assign34
-
-    chunked_list = list()
-    chunk_size = len(Tech_list112)
-    for i in range(0, len(Assign34), chunk_size):
-        chunked_list.append(Assign34[i : i + chunk_size])
-    chunked_list1 = list()
-
-    for k in range(0, len(chunked_list)):
-        O = sum(chunked_list[k])
-        if O != 0:
-            chunked_list1.append(chunked_list[k])
-
-    chunked_list1
-    Assign34 = list(itertools.chain(*chunked_list1))
+    len(df34)
+    Assign355 = []
+    for r in range(0,len(Assign34)):
+        Assign355.append(int(Assign34[r]))
+    Assign355
+    Assign34 = Assign355
     Assign34
-
     df34["Assignment"] = Assign34
+    df34["Assignmentm"] = Assign34m
+    df34["Assignmentt"] = Assign34t
+    df34["Assignments"] = Assign34s
+    df34
     sum_column = df34["Assignment"] + df34["VALUE"]
     df34["SUM"] = sum_column
-    df34
     df34.drop("VALUE", axis=1, inplace=True)
+    df34.drop("TECHNOLOGY", axis=1, inplace=True)
+    df34.drop("MODE_OF_OPERATION", axis=1, inplace=True)
+    df34.drop("STORAGE", axis=1, inplace=True)
     df34.drop("Assignment", axis=1, inplace=True)
     df34.rename(columns={"SUM": "VALUE"}, inplace=True)
+    df34.rename(columns={"Assignments": "STORAGE"}, inplace=True)
+    df34.rename(columns={"Assignmentm": "MODE_OF_OPERATION"}, inplace=True)
+    df34.rename(columns={"Assignmentt": "TECHNOLOGY"}, inplace=True)
     df34 = df34[
         [
             "PARAM",
@@ -2873,10 +2915,12 @@ def prepare_inputs(sets_df, df, input_data):
             "YEAR",
         ]
     ]
+    df34
     df = df.loc[df["PARAM"] != "TechnologyToStorage"]
     df = df.reset_index(drop=True)
     df34 = df34.reset_index(drop=True)
     df = df.append(df34, ignore_index=True)
+    df
 
     # PLATFORMTotalAnnualMaxCapacityInvestment
     df454 = platform_technologies
