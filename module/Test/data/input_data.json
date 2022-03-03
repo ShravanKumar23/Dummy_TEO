@@ -1,7 +1,7 @@
 {
   "platform": {
     "platform_sets": {
-      "REGION": ["Sweden"],
+      "REGION": ["sweden"],
       "EMISSION": ["co2"],
       "TIMESLICE": [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -9,19 +9,19 @@
         39, 40, 41, 42, 43, 44, 45, 46, 47, 48
       ],
       "YEAR": [
-        "2000",
-        "2001",
-        "2002",
-        "2003",
-        "2004",
-        "2005",
-        "2006",
-        "2007",
-        "2008",
-        "2009"
+        2000,
+        2001,
+        2002,
+        2003,
+        2004,
+        2005,
+        2006,
+        2007,
+        2008,
+        2009
       ],
       "MODE_OF_OPERATION": [1],
-      "STORAGE": ["sto1","sto2","sto3","stoa","stob","stoc"]
+      "STORAGE": ["sto1"]
     },
     "platform_technologies": [
       {
@@ -29,7 +29,7 @@
         "availability_factor": 0.95,
         "discount_rate_tech": 0.01,
         "capacity_to_activity": 8761,
-        "residual_capacity": 1,
+        "residual_capacity": 100,
         "max_capacity_investment": 15000.0,
         "min_capacity": 10,
         "min_capacity_investment": 0.01,
@@ -43,7 +43,7 @@
         "availability_factor": 0.95,
         "discount_rate_tech": 0.01,
         "capacity_to_activity": 8761,
-        "residual_capacity": 1,
+        "residual_capacity": 100,
         "max_capacity_investment": 15000,
         "min_capacity": 10,
         "min_capacity_investment": 0.01,
@@ -60,7 +60,7 @@
         "residual_capacity": 1,
         "max_capacity_investment": 15000,
         "min_capacity": 10,
-        "min_capacity_investment": 0.01,
+        "min_capacity_investment": 100,
         "annual_activity_lower_limit": 100,
         "annual_activity_upper_limit": 100000,
         "model_period_activity_lower_limit": 1000,
@@ -74,7 +74,7 @@
         "residual_capacity": 1,
         "max_capacity_investment": 15000,
         "min_capacity": 10,
-        "min_capacity_investment": 0.01,
+        "min_capacity_investment": 100,
         "annual_activity_lower_limit": 100,
         "annual_activity_upper_limit": 100000,
         "model_period_activity_lower_limit": 1000,
@@ -88,7 +88,7 @@
         "residual_capacity": 1,
         "max_capacity_investment": 15000,
         "min_capacity":10,
-        "min_capacity_investment": 0.01,
+        "min_capacity_investment": 100,
         "annual_activity_lower_limit": 100,
         "annual_activity_upper_limit": 100000,
         "model_period_activity_lower_limit": 1000,
@@ -102,10 +102,24 @@
         "residual_capacity": 1,
         "max_capacity_investment": 15000,
         "min_capacity": 10,
-        "min_capacity_investment": 0.01,
+        "min_capacity_investment": 100,
         "annual_activity_lower_limit": 100,
         "annual_activity_upper_limit": 100000,
         "model_period_activity_lower_limit": 1000,
+        "model_period_activity_upper_limit": 15000000
+      },
+      {
+        "technology": "gridspecifichex",
+        "availability_factor": 0.95,
+        "discount_rate_tech": 0.01,
+        "capacity_to_activity": 8761,
+        "residual_capacity": 0.001,
+        "max_capacity_investment": 15000,
+        "min_capacity": 0.001,
+        "min_capacity_investment": 0.001,
+        "annual_activity_lower_limit": 0.001,
+        "annual_activity_upper_limit": 100000,
+        "model_period_activity_lower_limit": 0.001,
         "model_period_activity_upper_limit": 15000000
       }
     ],
@@ -119,7 +133,7 @@
         "storage_max_discharge": 10000.0,
         "l2d": 1,
         "tag_heating": 1,
-        "tag_cooling": 1,
+        "tag_cooling": 0.001,
         "storage_return_temp": 50.0,
         "storage_supply_temp": 80.0,
         "storage_ambient_temp": 20.0,
@@ -127,114 +141,6 @@
         "max_storage_capacity": 450000.0,
         "storage_level_start": 1.0,
         "u_value": 0.14
-      },
-      {
-        "storage": "sto2",
-        "capital_cost_storage": 100.0,
-        "dicount_rate_sto": 0.1,
-        "operational_life_sto": 100.0,
-        "storage_max_charge": 10000.0,
-        "storage_max_discharge": 10000.0,
-        "l2d": 1,
-        "tag_heating": 1,
-        "tag_cooling": 1,
-        "storage_return_temp": 50.0,
-        "storage_supply_temp": 80.0,
-        "storage_ambient_temp": 20.0,
-        "residual_storage_capacity": 100.0,
-        "max_storage_capacity": 450000.0,
-        "storage_level_start": 1.0,
-        "u_value": 0.14
-      },
-      {
-        "storage": "sto3",
-        "capital_cost_storage": 100.0,
-        "dicount_rate_sto": 0.1,
-        "operational_life_sto": 100.0,
-        "storage_max_charge": 10000.0,
-        "storage_max_discharge": 10000.0,
-        "l2d": 1,
-        "tag_heating": 1,
-        "tag_cooling": 1,
-        "storage_return_temp": 50.0,
-        "storage_supply_temp": 80.0,
-        "storage_ambient_temp": 20.0,
-        "residual_storage_capacity": 100.0,
-        "max_storage_capacity": 450000.0,
-        "storage_level_start": 1.0,
-        "u_value": 0.14
-      },
-      {
-        "storage": "sto4",
-        "capital_cost_storage": 0.001,
-        "dicount_rate_sto": 0.001,
-        "operational_life_sto": 0.001,
-        "storage_max_charge": 0.001,
-        "storage_max_discharge": 0.001,
-        "l2d": 1,
-        "tag_heating": 1,
-        "tag_cooling": 1,
-        "storage_return_temp": 0.001,
-        "storage_supply_temp": 0.001,
-        "storage_ambient_temp": 0.001,
-        "residual_storage_capacity": 0.001,
-        "max_storage_capacity": 0.001,
-        "storage_level_start": 0.001,
-        "u_value": 0.001
-      },
-      {
-        "storage": "stoa",
-        "capital_cost_storage": 0.001,
-        "dicount_rate_sto": 0.001,
-        "operational_life_sto": 0.001,
-        "storage_max_charge": 0.001,
-        "storage_max_discharge": 0.001,
-        "l2d": 1,
-        "tag_heating": 1,
-        "tag_cooling": 1,
-        "storage_return_temp": 0.001,
-        "storage_supply_temp": 0.001,
-        "storage_ambient_temp": 0.001,
-        "residual_storage_capacity": 0.001,
-        "max_storage_capacity": 0.001,
-        "storage_level_start": 0.001,
-        "u_value": 0.001
-      },
-      {
-        "storage": "stob",
-        "capital_cost_storage": 0.001,
-        "dicount_rate_sto": 0.001,
-        "operational_life_sto": 0.001,
-        "storage_max_charge": 0.001,
-        "storage_max_discharge": 0.001,
-        "l2d": 1,
-        "tag_heating": 1,
-        "tag_cooling": 1,
-        "storage_return_temp": 0.001,
-        "storage_supply_temp": 0.001,
-        "storage_ambient_temp": 0.001,
-        "residual_storage_capacity": 0.001,
-        "max_storage_capacity": 0.001,
-        "storage_level_start": 0.001,
-        "u_value": 0.001
-      },
-      {
-        "storage": "stoc",
-        "capital_cost_storage": 0.001,
-        "dicount_rate_sto": 0.001,
-        "operational_life_sto": 0.001,
-        "storage_max_charge": 0.001,
-        "storage_max_discharge": 0.001,
-        "l2d": 1,
-        "tag_heating": 1,
-        "tag_cooling": 1,
-        "storage_return_temp": 0.001,
-        "storage_supply_temp": 0.001,
-        "storage_ambient_temp": 0.001,
-        "residual_storage_capacity": 0.001,
-        "max_storage_capacity": 0.001,
-        "storage_level_start": 0.001,
-        "u_value": 0.001
       }
     ],
     "platform_annual_emission_limit": [
@@ -247,38 +153,20 @@
       {
         "technology": "source1whrb1",
         "storage": "sto1",
-        "technologytostorage": 1.0,
+        "technologytostorage": 0.001,
         "technologyfromstorage": 0.001
       },
       {
         "technology": "source2whrb2",
-        "storage": "sto2",
-        "technologytostorage": 1.0,
-        "technologyfromstorage": 0.001
-      },
-      {
-        "technology": "sink1hea",
-        "storage": "stoa",
-        "technologytostorage": 1.0,
-        "technologyfromstorage": 0.001
-      },
-      {
-        "technology": "sink2heb",
-        "storage": "stob",
+        "storage": "sto1",
         "technologytostorage": 0.001,
-        "technologyfromstorage": 1.0
-      },
-      {
-        "technology": "sink3hec",
-        "storage": "stoc",
-        "technologytostorage": 1.0,
         "technologyfromstorage": 0.001
       },
       {
         "technology": "dhn",
-        "storage": "sto3",
+        "storage": "sto1",
         "technologytostorage": 0.001,
-        "technologyfromstorage": 1.0
+        "technologyfromstorage": 0.001
       }
     ]
   },
@@ -289,14 +177,10 @@
       "sink1hea",
       "sink2heb",
       "sink3hec",
-      "dhn"
+      "dhn",
+      "gridspecifichex"
     ],
     "sets_fuels": [
-      "elec",
-      "ind300",
-      "ind90",
-      "ind70",
-      "sup50",
       "convheat",
       "dhwater",
       "sink1demand",
@@ -79149,26 +79033,6 @@
     ],
     "specified_annual_demand_cf": [
       {
-        "fuel": "elec",
-        "value": 0
-      },
-      {
-        "fuel": "ind300",
-        "value": 0
-      },
-      {
-        "fuel": "ind90",
-        "value": 0
-      },
-      {
-        "fuel": "ind70",
-        "value": 0
-      },
-      {
-        "fuel": "sup50",
-        "value": 0
-      },
-      {
         "fuel": "convheat",
         "value": 0
       },
@@ -79178,15 +79042,15 @@
       },
       {
         "fuel": "sink1demand",
-        "value": 1000
+        "value": 100
       },
       {
         "fuel": "sink2demand",
-        "value": 1000
+        "value": 100
       },
       {
         "fuel": "sink1demand",
-        "value": 1000
+        "value": 100
       }
     ],
     "technologies_cf": [
@@ -79194,7 +79058,7 @@
           "technology": "source1whrb1",
           "input_fuel": "",
           "output_fuel": "convheat",
-          "input": 0.95,
+          "input": 0,
           "output": 1,
           "emission": "co2",
           "max_capacity": 100000,
@@ -79208,7 +79072,7 @@
           "technology": "source2whrb2",
           "input_fuel": "",
           "output_fuel": "convheat",
-          "input": 0.95,
+          "input": 0,
           "output": 1,
           "emission": "co2",
           "max_capacity": 100000,
@@ -79271,6 +79135,20 @@
           "turnkey_a": 5000,
           "om_fix": 10,
           "om_var": 5,
+          "emissions_factor": 2,
+          "emissions": "co2"
+      },
+      {
+          "technology": "gridspecifichex",
+          "input_fuel": "",
+          "output_fuel": "convheat",
+          "input": 1,
+          "output": 1,
+          "emission": "co2",
+          "max_capacity": 100000,
+          "turnkey_a": 15000,
+          "om_fix": 100,
+          "om_var": 50,
           "emissions_factor": 2,
           "emissions": "co2"
       }
