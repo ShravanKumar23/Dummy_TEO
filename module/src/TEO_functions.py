@@ -185,7 +185,7 @@ def saveResultsTemporary(_model, _scenario_i, variables):
             df = pd.concat([df, cost_df])
 
             # All other variables
-            res = tuple([v for v in _model.variables() if v.name != "Cost" and v.name != "RateOfProductionByTechnologyByMode"])
+            res = tuple([v for v in _model.variables() if v.name != "Cost" and  v.name != "__dummy"])
             other_df = pd.DataFrame(data={'NAME': [v.name.split('_')[0] for v in res],
                                          'VALUE': [v.value() for v in res],
                                          'INDICES': [variables[str(v.name.split('_')[0])]['indices'] for v in res],
@@ -212,119 +212,143 @@ def saveResultsTemporary(_model, _scenario_i, variables):
 
 def GIS_ExchangeCapacities(UseByTechnology, ProductionByTechnology):
 
-        #ProductionByTechnology
-        df = ProductionByTechnology
-        #df = df.drop(['NAME', 'STORAGE'], axis = 1)
-        df = df.loc[df['FUEL'] == 'CONVHEAT']
-        #df = df.loc[df['VALUE'] != 0]
-        df.reset_index(drop=True, inplace=True)
-        df3 = df.loc[df['YEAR'] == df['YEAR'].max()]
-        df3.reset_index(drop=True, inplace=True)
+    #ProductionByTechnology
+    df = ProductionByTechnology
+    #df = df.drop(['NAME', 'STORAGE'], axis = 1)
+    df = df.loc[df['FUEL'] == 'convheat']
+    df = df.loc[df['VALUE'] != 0]
+    df.reset_index(drop=True, inplace=True)
+    df3 = df.loc[df['YEAR'] == df['YEAR'].max()]
+    df3.reset_index(drop=True, inplace=True)
 
-        #UseByTechnology
-        df1 = UseByTechnology
-        #df1 = df1.drop(['NAME', 'STORAGE'], axis = 1)
-        df1 = df1.loc[df1['FUEL'] == 'DHWATER']
-        df1 = df1.loc[df1['VALUE'] != 0]
-        df2 = df1.loc[df1['YEAR'] == df1['YEAR'].max()]
-        df2.reset_index(drop=True, inplace=True)
+    #UseByTechnology
+    df1 = UseByTechnology
+    #df1 = df1.drop(['NAME', 'STORAGE'], axis = 1)
+    df1 = df1.loc[df1['FUEL'] == 'dhwater']
+    df1 = df1.loc[df1['VALUE'] != 0]
+    df2 = df1.loc[df1['YEAR'] == df1['YEAR'].max()]
+    df2.reset_index(drop=True, inplace=True)
 
-        #Creating a combined data frame
-        df4 = df3.append(df2, ignore_index=False)
-        df4 = df4.drop(['FUEL'], axis = 1)
-   
-       #Changing to platform nomenclature - THIS MUST BE HASHED LATER 
-#         Tech_list = df4['TECHNOLOGY'].tolist()
-#         Assign = []
-#         for x in Tech_list:
-#             if "HEA" in x:
-#                 Assign.append('Sink1_HEX')
-#             elif "HEB" in x:
-#                 Assign.append('Sink2_HEX')
-#             elif "HEC" in x:
-#                 Assign.append('Sink3_HEX')
-#             elif "WHRB" in x:
-#                 Assign.append('Source1_WHRB') 
-#         df4['Assignment'] = Assign  
-#         df4 = df4.drop(['TECHNOLOGY'], axis = 1)
-#         df4 = df4[['VALUE', 'TIMESLICE', 'Assignment', 'YEAR']]
-#         df4.rename(columns={'Assignment': 'TECHNOLOGY'}, inplace=True)
+    #Creating a combined data frame
+    df4 = df3.append(df2, ignore_index=False)
+    df4 = df4.drop(['FUEL'], axis = 1)
 
-        #Source or Sink Aggregation
-        Tech_list1 = df4['TECHNOLOGY'].tolist()
-        Assign1 = []
-        for x in Tech_list1:
-            for i in range (1,50000):
-                if (','.join(["Source%d" % i ])) in x:
-                    Assign1.append(','.join(["Source%d" % i ]))
-            for j in range (1,50000):
-                if (','.join(["Sink%d" % j ])) in x:
-                    Assign1.append(','.join(["Sink%d" % j ]))
-        df4['Assignment'] = Assign1
-        df4 = df4.drop(['TECHNOLOGY'], axis = 1)
-        df4 = df4[['VALUE', 'TIMESLICE', 'Assignment', 'YEAR']]
+   # #Changing to platform nomenclature - THIS MUST BE HASHED LATER 
+   #  Tech_list = df4['TECHNOLOGY'].tolist()
+   #  Assign = []
+   #  for x in Tech_list:
+   #      if "HEA" in x:
+   #          Assign.append('Sink1_HEX')
+   #      elif "HEB" in x:
+   #          Assign.append('Sink2_HEX')
+   #      elif "HEC" in x:
+   #          Assign.append('Sink3_HEX')
+   #      elif "WHRB" in x:
+   #          Assign.append('Source1_WHRB') 
+   #  df4['Assignment'] = Assign  
+   #  df4 = df4.drop(['TECHNOLOGY'], axis = 1)
+   #  df4 = df4[['VALUE', 'TIMESLICE', 'Assignment', 'YEAR']]
+   #  df4.rename(columns={'Assignment': 'TECHNOLOGY'}, inplace=True)
 
-        #Creating a Pivot Table
-        table = pd.pivot_table(df4,index=['TIMESLICE'],columns=['Assignment'],values=['VALUE'],aggfunc=np.sum)
+   # Drop all grid specific
+    Tech_list1 = df4['TECHNOLOGY'].tolist()
+    Tech_list1d = []
 
-        #Sorting the Pivot Table
-        sortedtable = table.reindex(table['VALUE'].sort_values(by=table.columns.droplevel(level = 0)[0], ascending=False).index)
-        append_df = sortedtable.head(table['VALUE', table.columns.droplevel(level = 0)[0]].value_counts()[table['VALUE', table.columns.droplevel(level = 0)[0]].max()])
-        for col_name in table.columns.droplevel(level = 0):
-            sortedtable = table.reindex(table['VALUE'].sort_values(by=col_name, ascending=False).index)
-            append_df = append_df.append(sortedtable.head(table['VALUE', col_name].value_counts()[table['VALUE', col_name].max()]))
-        #a = (sortedtable.iloc[0])
-        append_df1 = append_df.drop_duplicates()
-        append_df1.index.name = None
-        append_df1 = append_df1.transpose()
+    for k in Tech_list1:
+        if k not in Tech_list1d:
+            Tech_list1d.append(k)
+
+    Tech_list1d
+    sinkcount = []
+    sourcecount = []
+    for w in Tech_list1d:
+        if 'source' in w:
+            sourcecount.append(w)
+        elif 'sink' in w:
+            sinkcount.append(w)
+    Assign2 = []
+    for x in Tech_list1:
+        if ('grid') in x:
+            Assign2.append(0)
+        elif ('grid') not in x:
+            Assign2.append(1)   
+    df4['Assignment1'] = Assign2
+    df4 = df4.loc[df4['Assignment1'] != 0]
+
+    #Source or Sink Aggregation
+
+    Assign1 = []
+    Assign1 = []
+    for x in Tech_list1:
+        for i in range (1,int(len(sourcecount)+1)):
+            if (','.join(["source%d" % i ])) in x:
+                Assign1.append(','.join(["source%d" % i ]))
+        for j in range (1,int(len(sinkcount)+1)):
+            if (','.join(["sink%d" % j ])) in x:
+                Assign1.append(','.join(["sink%d" % j ]))
+    
+    df4['Assignment'] = Assign1
+    df4
+    df4 = df4.drop(['TECHNOLOGY'], axis = 1)
+    df4 = df4[['VALUE', 'TIMESLICE', 'Assignment', 'YEAR']]
+
+    #Creating a Pivot Table
+    table = pd.pivot_table(df4,index=['TIMESLICE'],columns=['Assignment'],values=['VALUE'],aggfunc=np.sum)
+
+    #Sorting the Pivot Table
+    sortedtable = table.reindex(table['VALUE'].sort_values(by=table.columns.droplevel(level = 0)[0], ascending=False).index)
+    append_df = sortedtable.head(table['VALUE', table.columns.droplevel(level = 0)[0]].value_counts()[table['VALUE', table.columns.droplevel(level = 0)[0]].max()])
+    for col_name in table.columns.droplevel(level = 0):
+        sortedtable = table.reindex(table['VALUE'].sort_values(by=col_name, ascending=False).index)
+        append_df = append_df.append(sortedtable.head(table['VALUE', col_name].value_counts()[table['VALUE', col_name].max()]))
+    #a = (sortedtable.iloc[0])
+    append_df1 = append_df.drop_duplicates()
+    append_df1.index.name = None
+    append_df1 = append_df1.transpose()
 
 
-        #Creating classification
-        append_df2 = append_df1.droplevel(level = 0)
-        append_df2 = append_df2.reset_index()
-        list1 = list(append_df2["Assignment"])
+    #Creating classification
+    append_df2 = append_df1.droplevel(level = 0)
+    append_df2 = append_df2.reset_index()
+    list1 = list(append_df2["Assignment"])
 
-        list2 = []
+    list2 = []
 
-        for x in list1:
-            if "Sink" in x:
-                list2.append('Sink')
-            else:
-                list2.append('Source')
+    for x in list1:
+        if "Sink" in x:
+            list2.append('sink')
+        else:
+            list2.append('source')
 
-        Classification_Type = pd.Series(list2)
-        append_df2.insert(loc=1, column='Classification', value=Classification_Type)
+    Classification_Type = pd.Series(list2)
+    append_df2.insert(loc=1, column='Classification', value=Classification_Type)
 
+    #Creating ID
 
+    list4 = list(append_df2["Assignment"])
 
-        #Creating ID
+    list5 = []
 
-        list4 = list(append_df2["Assignment"])
+    for x in list4:
+        for i in range (1,100):
+            if (','.join(["%d" % i ])) in x:
+                list5.append(','.join(["%d" % i ]))
 
-        list5 = []
+    ID = pd.Series(list5)
+    append_df2.insert(loc=0, column='ID', value=ID)
+    append_df2.drop('Assignment', axis=1, inplace=True)
 
-        for x in list4:
-            for i in range (1,100):
-                if (','.join(["%d" % i ])) in x:
-                    list5.append(','.join(["%d" % i ]))
+    return(append_df2)
 
-        ID = pd.Series(list5)
-        append_df2.insert(loc=0, column='ID', value=ID)
-        append_df2.drop('Assignment', axis=1, inplace=True)
-        print('Ex cap is created') 
-        return(append_df2)      
-        
-        
-        
 def CreateResults(res_df):
-
+     
     Names_NZ = ['Cost', 'AccumulatedNewCapacity', 'AccumulatedNewStorageCapacity', 'AnnualTechnologyEmission', 'ProductionByTechnology', 'StorageLevelTimesliceStart', 'UseByTechnology']
     Results_NZ = pd.DataFrame()
     for name_nz in Names_NZ:
         Results_NZ = Results_NZ.append((res_df[res_df['NAME'] == str(name_nz)]))
     Results_NZ1 = Results_NZ.dropna(axis=1, how='all')
     Results_NZ1 = Results_NZ1.drop(['SCENARIO', 'REGION'], axis = 1)
-    #Results_NZ1 = Results_NZ1.loc[Results_NZ1['VALUE'] > 0.00000001]
+    Results_NZ1 = Results_NZ1.loc[Results_NZ1['VALUE'] > 0.00000001]
    
 
     TEO_Results_NZ1 ={}
