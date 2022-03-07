@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import pulp
 import itertools
-from TEO_functions import *
+from .TEO_functions import *
 
 
 def buildmodel(sets_df, df, defaults_df, mcs_df, n):
