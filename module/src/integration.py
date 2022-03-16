@@ -1,4 +1,6 @@
 import json
+
+from ..Test.prepare_inputs import prepare_inputs
 from .TEO_Model import buildmodel
 from .utilities import (
     create_parameters_dataframe,
@@ -19,10 +21,20 @@ def run_build_model(input_data):
 
 def _prepare_inputs(input_data):
 
+    gis_module = input_data["gis-module"]
+    cf_module = input_data["cf-module"]
+    platform = input_data["platform"]
+
     default_df = create_parameters_default_dataframe(kb["parameters_default"])
-    sets_df = create_sets_dataframe(input_data["sets_df"])
+    jsset = platform["platform_sets"]
+    jsset["TECHNOLOGY"] = cf_module["sets_technologies"]
+    jsset["FUEL"] = cf_module["sets_fuels"]
+
+    sets_df = create_sets_dataframe(jsset)
 
     df = create_parameters_dataframe(sets_df, default_df)
+
+    df = prepare_inputs(sets_df, df, input_data)
 
     return sets_df, df, default_df
 
