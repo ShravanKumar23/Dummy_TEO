@@ -1,7 +1,6 @@
 [{
 		"PARAM": "YearSplit",
-		"VALUE": 0.020833333
-
+		"VALUE": 0
 	},
 	{
 		"PARAM": "Storagetagcooling",
@@ -18,7 +17,7 @@
 	},
 	{
 		"PARAM": "AnnualEmissionLimit",
-		"VALUE": 9999
+		"VALUE": 99999
 	},
 	{
 		"PARAM": "AnnualExogenousEmission",
@@ -38,7 +37,7 @@
 	},
 	{
 		"PARAM": "CapacityToActivityUnit",
-		"VALUE": 1
+		"VALUE": 8760
 	},
 	{
 		"PARAM": "CapitalCost",
@@ -74,11 +73,11 @@
 	},
 	{
 		"PARAM": "DiscountRateTech",
-		"VALUE": 0.05
+		"VALUE": 0.04
 	},
 	{
 		"PARAM": "DiscountRateSto",
-		"VALUE": 0.05
+		"VALUE": 0.04
 	},
 	{
 		"PARAM": "EmissionActivityRatio",
@@ -118,7 +117,7 @@
 	},
 	{
 		"PARAM": "OutputActivityRatio",
-		"VALUE": 1
+		"VALUE": 0
 	},
 	{
 		"PARAM": "OutputModeofoperation",
@@ -166,15 +165,15 @@
 	},
 	{
 		"PARAM": "StorageMaxCapacity",
-		"VALUE": 999999999
+		"VALUE": 99999
 	},
 	{
 		"PARAM": "StorageMaxChargeRate",
-		"VALUE": 999999999
+		"VALUE": 99999
 	},
 	{
 		"PARAM": "StorageMaxDischargeRate",
-		"VALUE": 999999999
+		"VALUE": 99999
 	},
 	{
 		"PARAM": "StorageLevelStart",
@@ -214,11 +213,11 @@
 	},
 	{
 		"PARAM": "TotalAnnualMaxCapacity",
-		"VALUE": 999999999
+		"VALUE": 99999
 	},
 	{
 		"PARAM": "TotalAnnualMaxCapacityInvestment",
-		"VALUE": 999999999
+		"VALUE": 99999
 	},
 	{
 		"PARAM": "TotalAnnualMinCapacity",
@@ -230,19 +229,19 @@
 	},
 	{
 		"PARAM": "TotalTechnologyAnnualActivityLowerLimit",
-		"VALUE": 1000
+		"VALUE": 0
 	},
 	{
 		"PARAM": "TotalTechnologyAnnualActivityUpperLimit",
-		"VALUE": 999999999
+		"VALUE": 99999
 	},
 	{
 		"PARAM": "TotalTechnologyModelPeriodActivityLowerLimit",
-		"VALUE": 10000
+		"VALUE": 0
 	},
 	{
 		"PARAM": "TotalTechnologyModelPeriodActivityUpperLimit",
-		"VALUE": 99999999999999
+		"VALUE": 99999
 	},
 	{
 		"PARAM": "TradeRoute",
