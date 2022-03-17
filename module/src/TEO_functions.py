@@ -215,7 +215,7 @@ def GIS_ExchangeCapacities(UseByTechnology, ProductionByTechnology):
     #ProductionByTechnology
     df = ProductionByTechnology
     #df = df.drop(['NAME', 'STORAGE'], axis = 1)
-    df = df.loc[df['FUEL'] == 'convheat']
+    df = df.loc[df['FUEL'] == 'dhnwatersupply']
     df = df.loc[df['VALUE'] != 0]
     df.reset_index(drop=True, inplace=True)
     df3 = df.loc[df['YEAR'] == df['YEAR'].max()]
@@ -224,7 +224,7 @@ def GIS_ExchangeCapacities(UseByTechnology, ProductionByTechnology):
     #UseByTechnology
     df1 = UseByTechnology
     #df1 = df1.drop(['NAME', 'STORAGE'], axis = 1)
-    df1 = df1.loc[df1['FUEL'] == 'dhwater']
+    df1 = df1.loc[df1['FUEL'] == 'dhnwaterdemand']
     df1 = df1.loc[df1['VALUE'] != 0]
     df2 = df1.loc[df1['YEAR'] == df1['YEAR'].max()]
     df2.reset_index(drop=True, inplace=True)
@@ -280,10 +280,10 @@ def GIS_ExchangeCapacities(UseByTechnology, ProductionByTechnology):
     Assign1 = []
     Assign1 = []
     for x in Tech_list1:
-        for i in range (1,int(len(sourcecount)+1)):
+        for i in range (1,6):
             if (','.join(["source%d" % i ])) in x:
                 Assign1.append(','.join(["source%d" % i ]))
-        for j in range (1,int(len(sinkcount)+1)):
+        for j in range (1,6):
             if (','.join(["sink%d" % j ])) in x:
                 Assign1.append(','.join(["sink%d" % j ]))
     
@@ -337,7 +337,7 @@ def GIS_ExchangeCapacities(UseByTechnology, ProductionByTechnology):
     ID = pd.Series(list5)
     append_df2.insert(loc=0, column='ID', value=ID)
     append_df2.drop('Assignment', axis=1, inplace=True)
-
+    append_df2 = append_df2.fillna(0)
     return(append_df2)
 
 def CreateResults(res_df):
