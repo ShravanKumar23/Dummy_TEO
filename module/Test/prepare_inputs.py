@@ -109,7 +109,7 @@ def prepare_inputs(sets_df, df, input_data):
     df2 = df2.reset_index(drop=True)
     df = df.append(df2, ignore_index=True)
 
-    # OAR
+# OAR
     df483 = pd.DataFrame(input_cf["technologies_cf"])
     Tech_list198 = df483["technology"].tolist()
     Value_list198 = df483["output"].tolist()
@@ -117,7 +117,7 @@ def prepare_inputs(sets_df, df, input_data):
     df3 = df.loc[df["PARAM"] == "OutputActivityRatio"]
     Tech_list3 = df3["TECHNOLOGY"].tolist()
     Tech_list3d = []
-
+    Tech_list3
     for i in Tech_list3:
         if i not in Tech_list3d:
             Tech_list3d.append(i)
@@ -153,7 +153,7 @@ def prepare_inputs(sets_df, df, input_data):
     Counter = []
     CounterY = []
     identifier = []
-
+    Assignedcounter = []
     for o in range(0, len(Tech_list198)):
         identifier.append(str(Fuel_list198[o] + Tech_list198[o]))
 
@@ -171,19 +171,20 @@ def prepare_inputs(sets_df, df, input_data):
                         if (
                             (b3) in y
                             and (c3) in x
-                        ):
-                            #print(str(str(x) + str(y)))
+                        ) and (Assignedcounter.count(Counterstring) < maxcounter2):
+                            # print(Counterstring)
                             Assign3.append(a3)
                             Assign3f.append(x)
                             Assign3m.append(w)
                             Assign3t.append(y)
                             Assign3y.append(z)
+                            Assignedcounter.append(Counterstring)
                         elif (
                             (b3 not in y and c3 not in x)
                              and (Counterstring not in identifier)
                             and (Counter.count(Counterstring) < maxcounter2)
                         ):
-                            #print(str(str(x) + str(y)))
+                            # print(Counterstring)
                             Assign3.append(0)
                             Assign3f.append(x)
                             Assign3m.append(w)
@@ -194,7 +195,7 @@ def prepare_inputs(sets_df, df, input_data):
                             and (Counterstring not in identifier)
                             and Counter.count(Counterstring) < maxcounter2
                         ):
-                            #print(str(str(x) + str(y)))
+                            # print(Counterstring)
                             Assign3.append(0)
                             Assign3f.append(x)
                             Assign3m.append(w)
@@ -318,6 +319,7 @@ def prepare_inputs(sets_df, df, input_data):
     Assign4y = []
     Counter = []
     identifier1 = []
+    Assignedcounter1 = []
 
     for o in range(0, len(Tech_list197)):
         identifier1.append(str(Fuel_list197[o] + Tech_list197[o]))
@@ -333,13 +335,14 @@ def prepare_inputs(sets_df, df, input_data):
                 for y in Tech_list4d:
                     for z in Year_list4d:
                         Counterstring = str(str(x) + str(y))
-                        if b4 in y and c4 in x:
+                        if (b4 in y and c4 in x) and (Assignedcounter1.count(Counterstring) < maxcounter1):
                             #print(str(str(x) + str(y)))
                             Assign4.append(a4)
                             Assign4f.append(x)
                             Assign4m.append(w)
                             Assign4t.append(y)
                             Assign4y.append(z)
+                            Assignedcounter1.append(Counterstring)
                         elif (b4 not in y and c4 not in x) and (Counterstring not in identifier1) and Counter.count(
                             Counterstring
                         ) < maxcounter1:
@@ -423,7 +426,7 @@ def prepare_inputs(sets_df, df, input_data):
     df = df.loc[df["PARAM"] != "InputActivityRatio"]
     df = df.reset_index(drop=True)
     df = df.append(df4, ignore_index=True)
-
+    df
     # CFCAPITALCOSTS
     import itertools
 
@@ -834,56 +837,51 @@ def prepare_inputs(sets_df, df, input_data):
     # SpecifiedAnnualDemand
     df472 = specified_annual_demand_cf
     Fuel_list177 = df472["fuel"].tolist()
+    Fuel_list177
     Value_list177 = df472["value"].tolist()
     Assign10 = []
     df10 = df.loc[df["PARAM"] == "SpecifiedAnnualDemand"]
     df10
     Fuel_list10 = df10["FUEL"].tolist()
+    Fuel_list10
     Year_list10 = df10["YEAR"].tolist()
     Year_list10d = []
+    Counter10 = []
+    Assignedcounter10 = []
+    Assign10f = []
+
     for i in Year_list10:
         if i not in Year_list10d:
             Year_list10d.append(i)
+
+    maxcounter10 =  len(Year_list10d)
+    maxcounter10
     for j in range(0, len(Fuel_list177)):
 
         a10 = 0.001 + Value_list177[j]
         b10 = Fuel_list177[j]
 
         for y in Fuel_list10:
-            if b10 in y:
+            Counterstring10 = str(y)
+            if b10 in y and Assignedcounter10.count(Counterstring10) < maxcounter10:
                 Assign10.append(a10)
-            else:
+                Assign10f.append(y)
+                Assignedcounter10.append(Counterstring10)
+                # print(Counterstring10)
+            elif (b10 not in y) and (y not in Fuel_list177) and (Counter10.count(Counterstring10) < maxcounter10):
                 Assign10.append(0)
-    Assign10
-
-    chunked_list = list()
-    chunk_size = len(Year_list10d)
-    for i in range(0, len(Assign10), chunk_size):
-        chunked_list.append(Assign10[i : i + chunk_size])
-    chunked_list
-
-    chunked_list1 = list()
-
-    for k in range(0, len(chunked_list)):
-        O = sum(chunked_list[k])
-        if O != 0:
-            chunked_list1.append(chunked_list[k])
-    chunked_list1
-
-    Assign10 = list(itertools.chain(*chunked_list1))
-    # a = len(df10) - len(Assign101)
-    # listdummy = []
-    # for i in range (1,a+1):
-    #     listdummy.append(0)
-    # listdummy
-    # Assign10 = listdummy + Assign101
-    # len(Assign10)
+                Assign10f.append(y)
+                # print(Counterstring10)
+            Counter10.append(Counterstring10)
     df10["Assignment"] = Assign10
+    df10["Assignmentf"] = Assign10f
     sum_column = df10["Assignment"] + df10["VALUE"]
     df10["SUM"] = sum_column
     df10.drop("VALUE", axis=1, inplace=True)
     df10.drop("Assignment", axis=1, inplace=True)
+    df10.drop("FUEL", axis=1, inplace=True)
     df10.rename(columns={"SUM": "VALUE"}, inplace=True)
+    df10.rename(columns={"Assignmentf": "FUEL"}, inplace=True)
     df10 = df10[
         [
             "PARAM",
@@ -906,6 +904,7 @@ def prepare_inputs(sets_df, df, input_data):
     df = df.reset_index(drop=True)
     df10 = df10.reset_index(drop=True)
     df = df.append(df10, ignore_index=True)
+    df
 
     # SpecifiedDemandProfile
     import numpy as np
@@ -922,7 +921,7 @@ def prepare_inputs(sets_df, df, input_data):
     for j in Fuel_list11:
         if j not in Fuel_list11d:
             Fuel_list11d.append(j)
-
+    Fuel_list11d
     TS_list11 = df11["TIMESLICE"].tolist()
     TS_list11d = []
 
@@ -945,20 +944,29 @@ def prepare_inputs(sets_df, df, input_data):
     Assign11y = []
     for j in range(0, len(Fuel_list177)):
         df1 = pd.DataFrame(df499[str(Fuel_list177[j])])
+        len(df1)
+        assign8784 = df1[str(Fuel_list177[j])].tolist()
+        length = 8784 - len(assign8784)
+
+        for i in range(0, length):
+            assign8784.append(0)
+
+        df1 = pd.DataFrame()
+        df1[str(Fuel_list177[j])] = assign8784
         assign = []
-        Timeslice = 48
+        Timeslice = len(sets_df["TIMESLICE"])
         split = Timeslice / 24
-        Marker = 8761 / (split)
+        Marker = 8785 / (split)
         assign99 = []
 
-        for k in range(1, 8761):
+        for k in range(1, 8785):
             i = (k / Marker) + 1
             assign99.append(int(i))
 
         df1["Marker"] = assign99
 
         assign999 = []
-        for l in range(1, 366):
+        for l in range(1, 367):
             for i in range(1, 25):
                 assign999.append(int(i))
 
@@ -976,7 +984,7 @@ def prepare_inputs(sets_df, df, input_data):
 
         cols = [table[col].squeeze() for col in table]
         cols = pd.concat(cols, ignore_index=True)
-        cols
+
 
         b11 = Fuel_list177[j]
 
@@ -991,7 +999,7 @@ def prepare_inputs(sets_df, df, input_data):
                         Assign11y.append(z)
                     elif (
                         (b11 not in x)
-                        and ("sink" not in x)
+                        and (x not in Fuel_list177)
                         and Counter.count(Counterstring) < maxcounter11
                     ):
                         # print(str(str(x) + str(y)))
@@ -1041,6 +1049,7 @@ def prepare_inputs(sets_df, df, input_data):
     df = df.loc[df["PARAM"] != "SpecifiedDemandProfile"]
     df = df.reset_index(drop=True)
     df = df.append(df11, ignore_index=True)
+    df
 
     # CapacityFactor
     import numpy as np
@@ -1083,24 +1092,34 @@ def prepare_inputs(sets_df, df, input_data):
     Assign12y = []
     assign1 = []
     Counter = []
+
     for j in range(0, len(Tech_list177)):
         df2 = pd.DataFrame(df500[str(Tech_list177[j])])
-        Timeslice1 = 48
+        Timeslice1 = len(sets_df["TIMESLICE"])
         split1 = Timeslice1 / 24
-        Marker1 = 8761 / (split1)
+        Marker1 = 8785 / (split1)
+        assign8784 = df2[str(Tech_list177[j])].tolist()
+        length = 8784 - len(assign8784)
+
+        for i in range(0, length):
+            assign8784.append(1)
+
+        df2 = pd.DataFrame()
+        df2[str(Tech_list177[j])] = assign8784
         assign991 = []
 
-        for l in range(1, 8761):
+        for l in range(1, 8785):
             i = (l / Marker1) + 1
             assign991.append(int(i))
 
         df2["Marker"] = assign991
         assign9991 = []
-        for k in range(1, 366):
+        for k in range(1, 367):
             for i in range(1, 25):
                 assign9991.append(int(i))
 
         df2["HourMarker"] = assign9991
+
         table1 = pd.pivot_table(
             df2,
             index=["HourMarker"],
@@ -1139,7 +1158,6 @@ def prepare_inputs(sets_df, df, input_data):
                         Assign12ts.append(y)
                         Assign12y.append(z)
                     Counter.append(Counterstring)
-
     Assign12
     len(df12)
     df12["Assignment"] = Assign12
